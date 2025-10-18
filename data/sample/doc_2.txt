@@ -1,0 +1,31 @@
+Production ML Systems: Model Serving and Inference
+
+Deploying machine learning models to production requires careful consideration of latency, throughput, and resource utilization. Unlike training, where batch processing is the norm, serving often requires real-time or near-real-time responses.
+
+Inference Optimization
+
+Several techniques can reduce inference latency. Model quantization reduces the precision of weights from FP32 to FP16 or INT8, cutting memory usage and improving throughput with minimal accuracy loss. Dynamic batching groups multiple requests together to amortize GPU overhead. Continuous batching, as implemented in vLLM, allows new requests to join an in-progress batch without waiting for all current requests to complete.
+
+Serving Frameworks
+
+Popular model serving frameworks include:
+
+Triton Inference Server by NVIDIA supports multiple backends (TensorRT, ONNX, PyTorch) and provides features like dynamic batching, model versioning, and ensemble models. It integrates well with Kubernetes for horizontal scaling.
+
+vLLM specializes in large language model serving with PagedAttention for efficient memory management. It can serve models like Llama-2 and Mistral with significantly higher throughput than naive implementations.
+
+BentoML provides a Python-first framework for packaging and deploying ML models with automatic REST API generation, containerization, and cloud deployment.
+
+Model Monitoring
+
+Production ML systems require continuous monitoring to detect degradation. Key metrics include prediction latency (p50, p95, p99), throughput (requests per second), prediction confidence distributions, and feature drift.
+
+Data drift occurs when the distribution of input features changes over time. This can cause model performance to degrade silently. Population Stability Index (PSI) is a common metric for detecting data drift. A PSI value above 0.2 indicates significant drift that may require model retraining.
+
+Concept drift is more subtle — the relationship between features and the target variable changes. This is harder to detect and often requires monitoring downstream business metrics.
+
+MLOps and CI/CD for Models
+
+Traditional CI/CD pipelines need adaptation for ML workflows. Model training is non-deterministic, making exact reproducibility challenging. A robust ML CI/CD pipeline should include: automated testing of data quality, model performance benchmarking against baselines, staged rollouts with canary deployments, and automated rollback when performance degrades.
+
+Tools like MLflow track experiments, manage model versions, and facilitate deployment. Airflow or Prefect can orchestrate training pipelines, handling dependencies between data processing, feature engineering, training, and evaluation steps.

@@ -1,0 +1,29 @@
+Retrieval-Augmented Generation (RAG) Overview
+
+Retrieval-Augmented Generation is a technique that combines information retrieval with text generation to produce more accurate and grounded responses. Instead of relying solely on a language model's parametric knowledge, RAG systems first retrieve relevant documents from a knowledge base, then use those documents as context for the generation step.
+
+The core components of a RAG pipeline are: a document store, a retrieval mechanism, and a generation model. The retrieval mechanism can be based on sparse methods like BM25 (which uses term frequency and inverse document frequency), dense methods using neural embeddings, or hybrid approaches combining both.
+
+Chunking Strategy
+
+How you split documents into chunks significantly impacts retrieval quality. Fixed-size chunking is simple but can split sentences mid-thought. Recursive chunking respects natural boundaries like paragraphs and sentences. Semantic chunking groups related content together based on meaning.
+
+The optimal chunk size depends on your use case. For question-answering, smaller chunks (256-512 tokens) often work better because they're more precise. For summarization, larger chunks (1024+ tokens) preserve more context.
+
+Embedding Models
+
+Dense retrieval relies on embedding models to convert text into vector representations. Popular options include BGE (BAAI General Embedding), E5 (Embeddings from Bidirectional Encoder Representations), and OpenAI's text-embedding models. Each has different tradeoffs in terms of quality, speed, and cost.
+
+BGE models are open-source and can run locally without API costs. They achieve competitive performance with proprietary models on most benchmarks. E5 models follow a similar approach but use different training objectives.
+
+Hybrid Retrieval
+
+Combining dense and sparse retrieval often outperforms either approach alone. Dense retrieval excels at semantic similarity but can miss exact keyword matches. Sparse retrieval catches exact matches but lacks semantic understanding. A weighted combination of both gives the best of both worlds.
+
+The weight between dense and sparse components is typically set between 0.6 and 0.8 for the dense component, with the remainder going to sparse. This ratio should be tuned based on your specific dataset and query patterns.
+
+Reranking
+
+Cross-encoder reranking is a powerful technique where a separate model scores the relevance of each retrieved chunk to the query. Unlike bi-encoder embeddings (which encode query and document separately), cross-encoders process the query-document pair together, allowing for richer interaction between them.
+
+Reranking typically improves precision by 10-20% at the cost of additional latency (50-200ms per query). For production systems, the tradeoff is usually worth it for accuracy-critical applications.

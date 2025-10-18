@@ -1,0 +1,21 @@
+question,answer
+What is RAG?,Retrieval-Augmented Generation is a technique that combines information retrieval with text generation to produce more accurate and grounded responses
+What are the core components of a RAG pipeline?,document store and a retrieval mechanism and a generation model
+What is the optimal chunk size for question-answering?,smaller chunks 256-512 tokens often work better because they are more precise
+What is hybrid retrieval?,Combining dense and sparse retrieval often outperforms either approach alone
+What does cross-encoder reranking do?,a separate model scores the relevance of each retrieved chunk to the query
+How much does reranking improve precision?,10-20% at the cost of additional latency
+What is model quantization?,reduces the precision of weights from FP32 to FP16 or INT8 cutting memory usage and improving throughput
+What is continuous batching?,allows new requests to join an in-progress batch without waiting for all current requests to complete
+What is data drift?,when the distribution of input features changes over time
+What PSI value indicates significant drift?,A PSI value above 0.2 indicates significant drift
+What is ChromaDB?,an open-source embedding database that runs in-process
+What ANN approach does ChromaDB use?,HNSW for indexing
+What is FAISS?,a library for efficient similarity search developed by Meta
+When should you use pgvector?,if you already use Postgres and have less than 10 million vectors
+What matters more than vector store choice?,The embedding model and chunking strategy matter much more
+What is BM25?,uses term frequency and inverse document frequency
+What is the typical dense weight in hybrid retrieval?,between 0.6 and 0.8 for the dense component
+What does Triton Inference Server support?,multiple backends including TensorRT ONNX PyTorch and provides features like dynamic batching
+What is concept drift?,the relationship between features and the target variable changes
+What does MLflow do?,tracks experiments manages model versions and facilitates deployment

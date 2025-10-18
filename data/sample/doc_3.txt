@@ -1,0 +1,31 @@
+Vector Databases and Similarity Search
+
+Vector databases are specialized storage systems designed for efficient similarity search over high-dimensional vectors. They are a critical component of modern RAG pipelines, enabling fast nearest-neighbor lookups over millions of document embeddings.
+
+How Vector Search Works
+
+When you embed a piece of text, you get a dense vector (typically 384 to 1536 dimensions). To find similar text, you compute the distance between the query vector and all stored vectors. Common distance metrics include cosine similarity, Euclidean distance, and dot product.
+
+Exact nearest-neighbor search is O(n) and becomes prohibitively slow for large datasets. Approximate Nearest Neighbor (ANN) algorithms trade a small amount of accuracy for dramatically faster search. Popular ANN approaches include HNSW (Hierarchical Navigable Small World) graphs, IVF (Inverted File Index), and Product Quantization.
+
+ChromaDB
+
+ChromaDB is an open-source embedding database that runs in-process (no separate server needed). It uses HNSW for indexing and supports metadata filtering alongside vector search. For prototyping and small to medium datasets (up to a few million documents), ChromaDB is a pragmatic choice because it requires zero infrastructure setup.
+
+Pinecone
+
+Pinecone is a managed vector database service. It handles scaling, replication, and infrastructure automatically. The tradeoff is cost — Pinecone charges per vector stored and per query. For production workloads with strict uptime requirements, managed solutions like Pinecone reduce operational burden.
+
+pgvector
+
+pgvector is a PostgreSQL extension that adds vector similarity search to your existing Postgres database. The advantage is consolidating your data — you don't need a separate vector database. The disadvantage is that Postgres wasn't designed for vector search, so performance at scale may not match purpose-built solutions.
+
+FAISS
+
+FAISS (Facebook AI Similarity Search) is a library for efficient similarity search, developed by Meta. It provides multiple index types optimized for different use cases: flat indexes for exact search, IVF indexes for large datasets, and HNSW indexes for low-latency requirements. FAISS is not a database — it's a search library that you integrate into your application.
+
+Choosing a Vector Store
+
+For benchmarking and development, use ChromaDB or FAISS — they run locally with no setup. For production with less than 10 million vectors, pgvector is a solid choice if you already use Postgres. For large-scale production (100M+ vectors), consider Pinecone, Weaviate, or Milvus.
+
+The choice of vector store rarely affects retrieval quality significantly. The embedding model and chunking strategy matter much more. Don't over-optimize your vector store choice — focus on the retrieval pipeline first.
